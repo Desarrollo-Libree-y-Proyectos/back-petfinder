@@ -118,4 +118,22 @@ router.get('/mascota/dueno/:id', async (req, res) => {
   }
 });
 
+router.put('/mascota/qr/:id', async (req, res) => {
+
+  try {
+
+    const {id_mascota, qr} = req.body;
+
+    const query = 'UPDATE mascota SET qrurl = $1 WHERE id_mascota = $2';
+    const values = [qr, id_mascota];
+    const result = await pool.query(query, values);
+
+    res.status(200).json({ message: 'Qr añadido actualizado exitosamente', result });
+
+  } catch (error) {
+    console.error('Error occurred during query:', error); // Log detailed error
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+});
+
 module.exports = router;
